@@ -18,15 +18,15 @@ if(pc>>>0>=n)throw 9;
 const op=p[pc],im=op<3?op*op:op>47&&op<52?2:0;
 if(pc+im>=n)throw 9;
 st++;const nx=pc+1+im;pc=nx;const A=p[nx-2]|p[nx-1]<<8;
-if(op>15&&op<35&&F[op-16]){u(2);const r=F[op-16](S[sp-2],S[sp-1]);if(r===undefined)throw 4;sp-=2;S[sp++]=r;continue;}
+if(F[op-16]){u(2);const r=F[op-16](S[sp-2],S[sp-1]);if(r===undefined)throw 4;sp-=2;S[sp++]=r;continue;}
 switch(op){
 case 0:throw 0;
 case 1:case 2:u(0,1);S[sp++]=op==1?p[nx-1]<<24>>24:p[nx-4]|p[nx-3]<<8|p[nx-2]<<16|p[nx-1]<<24;break;
 case 3:u(1);sp--;break;
-case 4:case 6:u(op/2-1,1);S[sp++]=S[sp-(op==4?2:3)];break;
+case 4:case 6:u(op/2-1,1);S[sp++]=S[sp-op/2];break;
 case 5:u(2);[S[sp-1],S[sp-2]]=[S[sp-2],S[sp-1]];break;
 case 7:u(3);[S[sp-3],S[sp-2],S[sp-1]]=[S[sp-2],S[sp-1],S[sp-3]];break;
-case 23:case 27:u(1);S[sp-1]=op==23?-S[sp-1]:~S[sp-1];break;
+case 23:case 27:u(1);S[sp-1]=~S[sp-1]+(op==23);break;
 case 48:case 49:case 50:
 if(op>48){u(1);const v=S[--sp];if(op===49?v!==0:v===0)break;}
 pc=nx+(A<<16>>16);break;
@@ -35,7 +35,7 @@ case 52:if(!cp)throw 8;pc=C[--cp];break;
 case 64:u(1);{const a=S[sp-1];if(a&~255)throw 6;S[sp-1]=M[a];break;}
 case 65:u(2);{const a=S[sp-1],v=S[sp-2];if(a&~255)throw 6;sp-=2;M[a]=v;break;}
 case 80:u(1);{const s=''+S[sp-1];if(O.length+s.length>65536)throw 11;sp--;O+=s;break;}
-case 81:u(1);if(O.length>65535)throw 11;O+=String.fromCharCode(S[--sp]&255);break;
+case 81:u(1);if(O.length>65535)throw 11;O+=String.fromCharCode(S[--sp]);break;
 case 82:u(0,1);S[sp++]=q[ip++]??-1;break;
 case 83:u(1);throw S[--sp]&255;
 default:throw 5;
